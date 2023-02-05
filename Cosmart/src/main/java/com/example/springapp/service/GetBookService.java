@@ -23,9 +23,15 @@ public class GetBookService implements Action<List<Book>, String> {
     @Override
     public List<Book> process(String subject) throws Exception {
         log.info("request {}", subject);
+        return process(subject, BOOK_URL);
+    }
+
+    //for testing purpose
+    public List<Book> process(String subject, String urlLink) throws Exception{
+        log.info("request {}", subject);
         List<Book> listBook = new ArrayList<>();
         try {
-            URL url = new URL(BOOK_URL);
+            URL url = new URL(urlLink);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
