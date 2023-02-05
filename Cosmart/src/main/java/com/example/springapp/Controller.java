@@ -1,10 +1,9 @@
 package com.example.springapp;
 
-import com.example.springapp.model.Book;
 import com.example.springapp.rqrs.Reservation;
 import com.example.springapp.rqrs.Response;
+import com.example.springapp.service.GetBookService;
 import com.example.springapp.service.ReservationService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
     private final ReservationService reservationService;
+    private final GetBookService getBookService;
 
     @Autowired
-    public Controller(ReservationService reservationService) {
+    public Controller(ReservationService reservationService,
+                      GetBookService getBookService) {
         this.reservationService = reservationService;
+        this.getBookService = getBookService;
     }
 
     @GetMapping("/book")
-    public ResponseEntity<Response> getBookList(@RequestParam("subject" ) String subject) {
+    public ResponseEntity<Response> getBookList(@RequestParam("subject") String subject) {
         Response response = new Response();
         try {
-            response.setData(reservationService.getBooks(subject));
+            response.setData(getBookService.process(subject));
         } catch (Exception ex) {
             response.setSuccess(false);
             response.setErrorMessage(ex.getMessage());
@@ -44,7 +46,7 @@ public class Controller {
     public ResponseEntity<Response> reserveBook(@RequestBody Reservation request) {
         Response response = new Response();
         try {
-            response.setData(reservationService.reserveBook(request));
+            response.setData(reservationService.process(request));
         } catch (Exception ex) {
             response.setSuccess(false);
             response.setErrorMessage(ex.getMessage());
