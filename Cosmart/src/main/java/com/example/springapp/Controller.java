@@ -29,7 +29,8 @@ public class Controller {
     }
 
     @GetMapping("/book")
-    public ResponseEntity<Response> getBookList(@RequestParam("subject") String subject) {
+    public ResponseEntity<Response> getBookList(@RequestParam(value = "subject", required = false)
+                                                    String subject) {
         Response response = new Response();
         try {
             response.setData(getBookService.process(subject));
