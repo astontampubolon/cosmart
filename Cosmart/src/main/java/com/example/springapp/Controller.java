@@ -33,7 +33,7 @@ public class Controller {
     @GetMapping("/book")
     public ResponseEntity<Response> getBookList(@RequestParam(value = "subject", required = false)
                                                     String subject) {
-        return handleRequest(reservationService, subject);
+        return handleRequest(getBookService, subject);
     }
 
     @PostMapping("/book")
